@@ -29,6 +29,10 @@ if (${CMAKE_ENABLE_TRACY})
 	    ${SRC_FILES}
 	)
 
+else()
+
+	add_library(${PROJECT_NAME} INTERFACE)
+
 endif()
 
 
