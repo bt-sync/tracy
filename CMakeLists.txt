@@ -18,14 +18,19 @@ platform_setup()
 platform_setup_cxx_flags()
 platform_setup_linker_flags()
 
-file(GLOB SRC_FILES TracyClient.cpp)
+if (${CMAKE_ENABLE_TRACY})
 
-add_definitions(-DTRACY_ENABLE
-)
+	file(GLOB SRC_FILES TracyClient.cpp)
 
-add_library(${PROJECT_NAME} STATIC
-    ${SRC_FILES}
-)
+	add_definitions(-DTRACY_ENABLE
+	)
+
+	add_library(${PROJECT_NAME} STATIC
+	    ${SRC_FILES}
+	)
+
+endif()
+
 
 target_include_directories(${PROJECT_NAME} 
 	INTERFACE
