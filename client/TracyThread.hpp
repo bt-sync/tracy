@@ -57,7 +57,19 @@ public:
     pthread_t Handle() const { return m_thread; }
 
 private:
-    static void* Launch( void* ptr ) { ((Thread*)ptr)->m_func( ((Thread*)ptr)->m_ptr ); return nullptr; }
+    static void* Launch( void* ptr )
+    {
+        sigset_t signalMask;
+        sigemptyset(&signalMask);
+        sigaddset(&signalMask, SIGRTMIN);
+        if (pthread_sigmask(SIG_BLOCK, &signalMask, nullptr) != 0)
+        {
+            throw "Tracy profiler's thread failed to block a real-time signal intended for SYNC's asynchronous file I/O completion notification";
+        }
+
+        ((Thread*)ptr)->m_func( ((Thread*)ptr)->m_ptr );
+        return nullptr;
+    }
     void(*m_func)( void* ptr );
     void* m_ptr;
     pthread_t m_thread;
