@@ -24,6 +24,7 @@ if (${CMAKE_ENABLE_TRACY})
 
      add_definitions(
           -DTRACY_ENABLE
+          -D__STDC_FORMAT_MACROS
          )
 
     add_library(${PROJECT_NAME} STATIC
